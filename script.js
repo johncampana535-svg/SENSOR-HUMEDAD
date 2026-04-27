@@ -1,37 +1,10 @@
 const token = "e8e28909-6ba4-4f64-8ce4-e301adfd7a85";
 const variable = "Distance";
 
-const valor = document.getElementById("valor");
+const avion = document.getElementById("avion");
+const texto = document.getElementById("dist");
 const estado = document.getElementById("estado");
-
-// gauge tipo dona
-const gauge = new Chart(document.getElementById("gauge"), {
-  type: "doughnut",
-  data: {
-    datasets: [{
-      data: [0, 100],
-      backgroundColor: ["green", "#e5e7eb"],
-      borderWidth: 0
-    }]
-  },
-  options: {
-    cutout: "80%",
-    plugins: { legend: { display: false } }
-  }
-});
-
-// gráfica historial
-const grafica = new Chart(document.getElementById("grafica"), {
-  type: "line",
-  data: {
-    labels: [],
-    datasets: [{
-      data: [],
-      borderColor: "blue",
-      tension: 0.3
-    }]
-  }
-});
+const root = document.documentElement;
 
 async function actualizar() {
   try {
@@ -40,6 +13,7 @@ async function actualizar() {
     });
 
     const data = await res.json();
+
     if (!data.result || data.result.length === 0) return;
 
     let d = parseFloat(data.result[0].value);
@@ -53,44 +27,33 @@ async function actualizar() {
 }
 
 function actualizarUI(d) {
-  valor.innerText = d.toFixed(1) + " cm";
+  texto.innerText = d.toFixed(1) + " cm";
 
-  let porcentaje = Math.min(d, 100);
+  // mover avión (izquierda a derecha)
+  let pos = Math.min((d / 50) * 100, 100);
+  avion.style.left = pos + "%";
 
-  gauge.data.datasets[0].data = [porcentaje, 100 - porcentaje];
-
-  // colores suaves
-  let color = "green";
+  // cambio de fondo
   if (d === 0) {
     estado.innerText = "Sin detección";
-    color = "gray";
+    root.style.setProperty('--bg', 'gray');
   } 
   else if (d <= 5) {
-    estado.innerText = "Peligro";
-    color = "red";
+    estado.innerText = "Muy cerca";
+    root.style.setProperty('--bg', 'red');
   } 
   else if (d <= 20) {
-    estado.innerText = "Cerca";
-    color = "orange";
+    estado.innerText = "Cercano";
+    root.style.setProperty('--bg', 'orange');
+  } 
+  else if (d <= 50) {
+    estado.innerText = "Distancia media";
+    root.style.setProperty('--bg', 'skyblue');
   } 
   else {
-    estado.innerText = "Seguro";
-    color = "green";
+    estado.innerText = "Lejos";
+    root.style.setProperty('--bg', 'blue');
   }
-
-  gauge.data.datasets[0].backgroundColor = [color, "#e5e7eb"];
-
-  // historial
-  grafica.data.labels.push("");
-  grafica.data.datasets[0].data.push(d);
-
-  if (grafica.data.labels.length > 10) {
-    grafica.data.labels.shift();
-    grafica.data.datasets[0].data.shift();
-  }
-
-  gauge.update();
-  grafica.update();
 }
 
 setInterval(actualizar, 1000);
