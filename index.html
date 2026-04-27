@@ -2,31 +2,26 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Monitor de Distancia</title>
+<title>Simulación de Distancia</title>
 
 <link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body>
 
-<div class="container">
+<div class="ciudad">
 
-  <h1>Monitor de Distancia</h1>
+  <!-- Torres -->
+  <div class="torre torre1"></div>
+  <div class="torre torre2"></div>
 
-  <div class="card gauge-card">
-    <canvas id="gauge"></canvas>
-    <div id="valor">-- cm</div>
-  </div>
+  <!-- Avión -->
+  <div id="avion">✈️</div>
 
-  <div class="card">
-    <h3>Estado</h3>
-    <p id="estado">Cargando...</p>
-  </div>
-
-  <div class="card">
-    <h3>Historial</h3>
-    <canvas id="grafica"></canvas>
+  <!-- Datos -->
+  <div class="info">
+    <h2 id="dist">-- cm</h2>
+    <p id="estado">Conectando...</p>
   </div>
 
 </div>
