@@ -1,60 +1,67 @@
 const token = "e8e28909-6ba4-4f64-8ce4-e301adfd7a85";
 const variable = "Distance";
 
-const avion = document.getElementById("avion");
-const texto = document.getElementById("dist");
-const estado = document.getElementById("estado");
-const root = document.documentElement;
+const plane = document.getElementById("plane");
+const dist = document.getElementById("dist");
+const state = document.getElementById("state");
+const sky = document.getElementById("sky");
 
-async function actualizar() {
+async function update() {
   try {
     const res = await fetch(`https://api.tago.io/data?variable=${variable}&qty=1`, {
       headers: { "Device-Token": token }
     });
 
     const data = await res.json();
-
     if (!data.result || data.result.length === 0) return;
 
     let d = parseFloat(data.result[0].value);
     if (isNaN(d)) d = 0;
 
-    actualizarUI(d);
+    updateUI(d);
 
   } catch {
-    estado.innerText = "Error";
+    state.innerText = "Error conexión";
   }
 }
 
-function actualizarUI(d) {
-  texto.innerText = d.toFixed(1) + " cm";
+function updateUI(d) {
+  dist.innerText = d.toFixed(1) + " cm";
 
-  // mover avión (izquierda a derecha)
-  let pos = Math.min((d / 50) * 100, 100);
-  avion.style.left = pos + "%";
+  // Movimiento avión (horizontal + leve vertical)
+  let x = Math.min((d / 50) * 100, 100);
+  let y = 80 + (50 - d); // baja cuando se acerca
 
-  // cambio de fondo
+  plane.style.left = x + "%";
+  plane.style.top = y + "px";
+
+  // Fondo dinámico tipo día → noche
   if (d === 0) {
-    estado.innerText = "Sin detección";
-    root.style.setProperty('--bg', 'gray');
-  } 
+    sky.style.background = "gray";
+    state.innerText = "Sin detección";
+    sky.classList.remove("alert");
+  }
   else if (d <= 5) {
-    estado.innerText = "Muy cerca";
-    root.style.setProperty('--bg', 'red');
-  } 
+    sky.style.background = "darkred";
+    state.innerText = "MUY CERCA ⚠️";
+    sky.classList.add("alert");
+  }
   else if (d <= 20) {
-    estado.innerText = "Cercano";
-    root.style.setProperty('--bg', 'orange');
-  } 
+    sky.style.background = "orange";
+    state.innerText = "Cercano";
+    sky.classList.remove("alert");
+  }
   else if (d <= 50) {
-    estado.innerText = "Distancia media";
-    root.style.setProperty('--bg', 'skyblue');
-  } 
+    sky.style.background = "linear-gradient(#87ceeb, #e0f6ff)";
+    state.innerText = "Normal";
+    sky.classList.remove("alert");
+  }
   else {
-    estado.innerText = "Lejos";
-    root.style.setProperty('--bg', 'blue');
+    sky.style.background = "linear-gradient(#0f172a, #020617)";
+    state.innerText = "Lejos";
+    sky.classList.remove("alert");
   }
 }
 
-setInterval(actualizar, 1000);
-actualizar();
+setInterval(update, 1000);
+update();
