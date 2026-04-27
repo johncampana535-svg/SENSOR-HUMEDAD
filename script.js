@@ -1,67 +1,86 @@
 const token = "e8e28909-6ba4-4f64-8ce4-e301adfd7a85";
 const variable = "Distance";
 
-const plane = document.getElementById("plane");
-const dist = document.getElementById("dist");
-const state = document.getElementById("state");
-const sky = document.getElementById("sky");
+const estado = document.getElementById("estado");
+const texto = document.getElementById("txt-dist");
+const carro = document.getElementById("carro");
+const barra = document.getElementById("nivel");
+const root = document.documentElement;
 
-async function update() {
+// gráfica
+const ctx = document.getElementById("grafica").getContext("2d");
+const chart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      data: [],
+      borderColor: "#22c55e",
+      tension: 0.3
+    }]
+  }
+});
+
+async function actualizar() {
   try {
     const res = await fetch(`https://api.tago.io/data?variable=${variable}&qty=1`, {
       headers: { "Device-Token": token }
     });
 
     const data = await res.json();
+
     if (!data.result || data.result.length === 0) return;
 
     let d = parseFloat(data.result[0].value);
     if (isNaN(d)) d = 0;
 
-    updateUI(d);
+    actualizarUI(d);
 
-  } catch {
-    state.innerText = "Error conexión";
+  } catch (e) {
+    estado.innerText = "Error conexión";
   }
 }
 
-function updateUI(d) {
-  dist.innerText = d.toFixed(1) + " cm";
+function actualizarUI(d) {
+  texto.innerText = d.toFixed(1) + " cm";
 
-  // Movimiento avión (horizontal + leve vertical)
-  let x = Math.min((d / 50) * 100, 100);
-  let y = 80 + (50 - d); // baja cuando se acerca
+  let pos = Math.min((d / 50) * 100, 100);
+  carro.style.left = pos + "%";
+  barra.style.width = pos + "%";
 
-  plane.style.left = x + "%";
-  plane.style.top = y + "px";
-
-  // Fondo dinámico tipo día → noche
+  // 🔥 CAMBIO DE COLORES DINÁMICO
   if (d === 0) {
-    sky.style.background = "gray";
-    state.innerText = "Sin detección";
-    sky.classList.remove("alert");
-  }
+    estado.innerText = "SIN DETECCIÓN";
+    root.style.setProperty('--color', 'gray');
+  } 
   else if (d <= 5) {
-    sky.style.background = "darkred";
-    state.innerText = "MUY CERCA ⚠️";
-    sky.classList.add("alert");
-  }
+    estado.innerText = "PELIGRO";
+    root.style.setProperty('--color', 'red');
+  } 
   else if (d <= 20) {
-    sky.style.background = "orange";
-    state.innerText = "Cercano";
-    sky.classList.remove("alert");
-  }
+    estado.innerText = "CERCA";
+    root.style.setProperty('--color', 'orange');
+  } 
   else if (d <= 50) {
-    sky.style.background = "linear-gradient(#87ceeb, #e0f6ff)";
-    state.innerText = "Normal";
-    sky.classList.remove("alert");
-  }
+    estado.innerText = "SEGURO";
+    root.style.setProperty('--color', 'lime');
+  } 
   else {
-    sky.style.background = "linear-gradient(#0f172a, #020617)";
-    state.innerText = "Lejos";
-    sky.classList.remove("alert");
+    estado.innerText = "LIBRE";
+    root.style.setProperty('--color', 'cyan');
   }
+
+  // gráfica
+  chart.data.labels.push("");
+  chart.data.datasets[0].data.push(d);
+
+  if (chart.data.labels.length > 10) {
+    chart.data.labels.shift();
+    chart.data.datasets[0].data.shift();
+  }
+
+  chart.update();
 }
 
-setInterval(update, 1000);
-update();
+setInterval(actualizar, 1000);
+actualizar();
