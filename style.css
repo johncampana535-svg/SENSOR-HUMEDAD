@@ -1,34 +1,54 @@
+:root {
+  --bg: skyblue;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-  color: #111;
-  text-align: center;
+  background: var(--bg);
+  transition: background 0.5s;
+  overflow: hidden;
+  font-family: Arial;
 }
 
-.container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-}
-
-.card {
-  background: white;
-  padding: 20px;
-  margin: 15px 0;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.gauge-card {
+.ciudad {
   position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
-#valor {
+/* Torres */
+.torre {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 30px;
-  font-weight: bold;
+  bottom: 0;
+  width: 80px;
+  height: 300px;
+  background: #444;
+}
+
+.torre1 {
+  left: 45%;
+}
+
+.torre2 {
+  left: 55%;
+}
+
+/* Avión */
+#avion {
+  position: absolute;
+  top: 50px;
+  left: 0%;
+  font-size: 40px;
+  transition: 0.5s;
+}
+
+/* Info */
+.info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  padding: 10px;
+  border-radius: 10px;
 }
