@@ -2,27 +2,61 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Smart Drop Visualizer</title>
+<title>📡 Smart Distance Monitor</title>
+
 <link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 <body>
 
-<div class="scene" id="scene">
+<div class="app">
 
-  <!-- Objeto -->
-  <div id="obj">📦</div>
+  <header>
+    <h1>📡 Smart Distance Monitor</h1>
+    <span id="estado" class="estado">Conectando...</span>
+  </header>
 
-  <!-- Suelo -->
-  <div class="ground"></div>
+  <main>
 
-  <!-- HUD -->
-  <div class="hud">
-    <h2 id="dist">-- cm</h2>
-    <p id="state">Conectando...</p>
-  </div>
+    <section class="card center">
+      <div id="txt-dist" class="distancia">-- cm</div>
+      <div class="sub">Distancia actual</div>
+    </section>
+
+    <section class="card radar-card">
+      <div class="radar">
+        <div class="onda"></div>
+        <div class="onda delay"></div>
+        <div class="centro"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="barra">
+        <div id="nivel"></div>
+      </div>
+    </section>
+
+    <section class="card pista">
+      <div id="carro">🚗</div>
+    </section>
+
+    <section class="card">
+      <canvas id="grafica"></canvas>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>IoT • Tiempo real</span>
+  </footer>
 
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
