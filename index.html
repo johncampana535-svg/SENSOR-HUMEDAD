@@ -2,31 +2,32 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Simulación de Distancia</title>
-
+<title>Sky Distance Visualizer</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
 
-<div class="ciudad">
+<div class="sky" id="sky">
+
+  <!-- Nubes -->
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
 
   <!-- Torres -->
-  <div class="torre torre1"></div>
-  <div class="torre torre2"></div>
+  <div class="tower t1"></div>
+  <div class="tower t2"></div>
 
   <!-- Avión -->
-  <div id="avion">✈️</div>
+  <div id="plane">✈️</div>
 
-  <!-- Datos -->
-  <div class="info">
+  <!-- Panel -->
+  <div class="panel">
     <h2 id="dist">-- cm</h2>
-    <p id="estado">Conectando...</p>
+    <p id="state">Conectando...</p>
   </div>
 
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
