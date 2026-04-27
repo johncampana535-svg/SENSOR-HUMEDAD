@@ -4,73 +4,53 @@ body {
   font-family: Arial;
 }
 
-/* Fondo dinámico */
-.sky {
+/* Escena */
+.scene {
   width: 100%;
   height: 100vh;
+  background: linear-gradient(#0ea5e9, #1e293b);
+  position: relative;
   transition: background 1s;
-  background: linear-gradient(#87ceeb, #e0f6ff);
 }
 
-/* Nubes */
-.cloud {
+/* Objeto */
+#obj {
   position: absolute;
-  width: 120px;
-  height: 60px;
-  background: white;
-  border-radius: 50%;
-  opacity: 0.7;
-  animation: moveClouds 20s linear infinite;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 50px;
+  transition: top 0.8s cubic-bezier(.2,.8,.2,1);
 }
 
-.c1 { top: 20%; left: -150px; }
-.c2 { top: 40%; left: -200px; animation-duration: 25s; }
-
-@keyframes moveClouds {
-  from { transform: translateX(0); }
-  to { transform: translateX(120vw); }
-}
-
-/* Torres */
-.tower {
+/* Suelo */
+.ground {
   position: absolute;
   bottom: 0;
-  width: 70px;
-  height: 320px;
-  background: linear-gradient(#555, #222);
-  box-shadow: inset 0 0 10px black;
+  width: 100%;
+  height: 80px;
+  background: #14532d;
+  box-shadow: inset 0 5px 10px black;
 }
 
-.t1 { left: 45%; }
-.t2 { left: 55%; }
-
-/* Avión */
-#plane {
-  position: absolute;
-  top: 80px;
-  left: 0%;
-  font-size: 40px;
-  transition: left 0.8s ease, top 0.8s ease;
-}
-
-/* Panel */
-.panel {
+/* HUD */
+.hud {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: rgba(0,0,0,0.5);
   color: white;
+  background: rgba(0,0,0,0.4);
   padding: 10px;
   border-radius: 10px;
 }
 
-/* ALERTA */
+/* efecto alerta */
 .alert {
-  animation: flash 0.5s infinite;
+  animation: flash 0.4s infinite;
 }
 
 @keyframes flash {
-  0% { background-color: red; }
-  50% { background-color: darkred; }
-  100% { background-color: red; }
+  0% { background-color: #7f1d1d; }
+  50% { background-color: #dc2626; }
+  100% { background-color: #7f1d1d; }
 }
